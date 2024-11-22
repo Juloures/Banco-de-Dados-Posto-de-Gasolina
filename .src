@@ -1,0 +1,61 @@
+create database PostoGasolina;
+use PostoGasolina;
+
+create table Combustiveis (
+id_combustivel int auto_increment primary key,
+tipo varchar(50),
+preco_por_litro decimal(5,2)
+);
+
+create table Bombas (
+id_bomba int auto_increment primary key,
+id_combustivel int,
+descricao varchar(100)
+);
+
+create table Funcionarios (
+id_funcionario int auto_increment primary key,
+nome varchar(100),
+cargo varchar(50),
+turno enum('Manhã','Tarde','Noite'),
+telefone varchar(15)
+);
+
+create table Clientes (
+id_cliente int auto_increment primary key,
+nome varchar(100),
+telefone varchar (15),
+email varchar(100)
+);
+
+create table Abastecimentos (
+id_abastecimento int auto_increment primary key,
+id_cliente int,
+id_bomba int,
+id_funcionario int,
+volume decimal(6,2),
+valor_total decimal(8,2),
+data_abastecimento datetime,
+foreign key (id_cliente) references Clientes(id_cliente),
+foreign key (id_bomba) references Bombas(id_bomba),
+foreign key (id_funcionario) references Funcionarios(id_funcionario)
+);
+
+create table Servicos (
+id_servico int auto_increment primary key,
+descricao varchar(255),
+preco decimal(3,2)
+);
+
+create table Transacoes (
+id_transicao int auto_increment primary key,
+id_cliente int,
+id_servico int,
+id_abastecimento int,
+forma_pagamento enum('Dinheiro','Cartão','pix'),
+total_pago decimal(10,2),
+data_transacao datetime,
+foreign key (id_cliente) references Clientes(id_cliente),
+foreign key (id_servico) references Servicos(id_servico),
+foreign key (id_abastecimento) references Abastecimentos(id_abastecimento)
+);
